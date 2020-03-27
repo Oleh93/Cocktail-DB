@@ -16,11 +16,11 @@ protocol CocktailsCoordinatorProtocol: Coordinator {
 final class CocktailsCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
-
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
-
+    
     func start() {
         let vc = ViewControllerFactory.shared.cocktailsViewController()
         vc.cocktailsCoordinatorProtocol = self
