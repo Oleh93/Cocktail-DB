@@ -27,8 +27,8 @@ final class CocktailsViewController: UIViewController {
     var drinksDict: [String: [Drink]] = [:] {
         didSet { DispatchQueue.main.async {
             if !self.drinksDict.isEmpty {
-                    self.drinksTableView.reloadData()
-                }
+                self.drinksTableView.reloadData()
+            }
             }
         }
     }
@@ -36,9 +36,9 @@ final class CocktailsViewController: UIViewController {
     
     var categoriesToShow: [String] = [] {
         didSet { DispatchQueue.main.async {
-                self.loadFirstSection()
-
-                self.stopProgressHud()
+            self.loadFirstSection()
+            
+            self.stopProgressHud()
             }
         }
         willSet { DispatchQueue.main.async { self.startProgressHud(with: "Loading...") } }
@@ -52,7 +52,7 @@ final class CocktailsViewController: UIViewController {
         setupTableView()
         setupTableViewCell()
         title = "Drinks"
-                
+        
         API.shared.fetchCategories { (result) in
             switch result {
             case .success(let data):
@@ -87,7 +87,6 @@ private extension CocktailsViewController {
     func setupCategoriesButton(active: Bool) {
         let item = UIBarButtonItem(title: "Categories: \(categoriesToShow.count)", style: .plain, target: self, action: #selector(categoriesButtonTapped))
         item.isEnabled = true ? active: false
-        print(item.isEnabled)
         navigationItem.rightBarButtonItem = item
     }
     
@@ -146,7 +145,7 @@ extension CocktailsViewController: UITableViewDataSource {
     //swiftlint:disable force_cast
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CocktailsTableViewCell", for: indexPath) as! CocktailsTableViewCell
-
+        
         guard let drinks = drinksDict[categoriesToShow[indexPath.section]] else { return cell}
         
         cell.configure(drink: drinks[indexPath.row])
