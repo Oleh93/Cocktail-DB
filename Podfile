@@ -16,4 +16,7 @@ target 'Cocktail DB' do
   #Images processing
   pod 'SDWebImage', '~> 5.0'
 
+  #UI
+  pod 'MBProgressHUD', '~> 1.2.0'
+
 end

@@ -29,15 +29,16 @@ final class CategoriesViewController: UIViewController {
         
         setupTableView()
         setupTableViewCell()
+        setupSaveButton()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        let selectedCategories = getSelectedCategories()
-        DataManager.shared.categoriesToShow = selectedCategories
-        completion?(selectedCategories)
-    }
+
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//
+//        let selectedCategories = getSelectedCategories()
+//        DataManager.shared.categoriesToShow = selectedCategories
+//        completion?(selectedCategories)
+//    }
 }
 
 // MARK: - Private
@@ -58,7 +59,10 @@ private extension CategoriesViewController {
     }
     
     @objc func saveButtonTapped() {
-        print("save tapped")
+        let selectedCategories = getSelectedCategories()
+        DataManager.shared.categoriesToShow = selectedCategories
+        completion?(selectedCategories)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func getSelectedCategories() -> [String] {

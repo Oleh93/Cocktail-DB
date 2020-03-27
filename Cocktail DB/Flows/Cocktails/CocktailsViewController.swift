@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 private enum Constants {
     static var heightForRow = 100
@@ -20,38 +21,38 @@ final class CocktailsViewController: UIViewController {
     @IBOutlet weak private var drinksTableView: UITableView!
     
     // MARK: - Properties
+    
     var cocktailsCoordinatorProtocol: CocktailsCoordinatorProtocol?
     
     var drinksDict: [String: [Drink]] = [:] {
-        didSet {
-            DispatchQueue.main.async {
-                print("didSet")
-                self.drinksTableView.reloadData() }
+        didSet { DispatchQueue.main.async {
+            if !self.drinksDict.isEmpty {
+                    self.drinksTableView.reloadData()
+                }
+            }
         }
     }
     var categories: [String] = []
     
     var categoriesToShow: [String] = [] {
-        didSet {
-            DispatchQueue.main.async { self.loadFirstSection()}
+        didSet { DispatchQueue.main.async {
+                self.loadFirstSection()
+
+                self.stopProgressHud()
+            }
         }
+        willSet { DispatchQueue.main.async { self.startProgressHud(with: "Loading...") } }
     }
     
     // MARK: - Lifecycle
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        setupTableView()
-        setupTableViewCell()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        startProgressHud(with: "Loading...")
+        setupTableView()
+        setupTableViewCell()
         title = "Drinks"
-        
-        setupCategoriesButton()
-        
+                
         API.shared.fetchCategories { (result) in
             switch result {
             case .success(let data):
@@ -61,8 +62,8 @@ final class CocktailsViewController: UIViewController {
                     DataManager.shared.categoriesToShow = self.categories
                 }
                 self.categoriesToShow = DataManager.shared.categoriesToShow!
-                self.loadFirstSection()
-                print("categories success")
+                self.stopProgressHud()
+                
             case .failure(let error):
                 print(error)
             }
@@ -83,8 +84,10 @@ private extension CocktailsViewController {
         drinksTableView.dataSource = self
     }
     
-    func setupCategoriesButton() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Categories", style: .plain, target: self, action: #selector(categoriesButtonTapped))
+    func setupCategoriesButton(active: Bool) {
+        let item = UIBarButtonItem(title: "Categories", style: .plain, target: self, action: #selector(categoriesButtonTapped))
+        item.isEnabled = true ? active: false
+        navigationItem.rightBarButtonItem = item
     }
     
     @objc func categoriesButtonTapped() {
@@ -94,16 +97,27 @@ private extension CocktailsViewController {
     }
     
     func loadFirstSection() {
+        if categoriesToShow.isEmpty { drinksTableView.reloadData(); return }
         API.shared.fetchDrinks(category: categoriesToShow[0]) { (result) in
             switch result {
             case .success(let data):
-                print("here")
                 self.drinksDict[self.categoriesToShow[0]] = data.drinks
-                print("drinksDict count:", self.drinksDict.count)
             case .failure(let error):
                 print(error)
             }
         }
+    }
+    
+    func startProgressHud(with title: String) {
+        setupCategoriesButton(active: false)
+        let loadingNotification = MBProgressHUD.showAdded(to: view, animated: true)
+        loadingNotification.mode = MBProgressHUDMode.indeterminate
+        loadingNotification.label.text = title
+    }
+    
+    func stopProgressHud() {
+        MBProgressHUD.hide(for: view, animated: true)
+        setupCategoriesButton(active: true)
     }
 }
 
@@ -126,7 +140,7 @@ extension CocktailsViewController: UITableViewDataSource {
     //swiftlint:disable force_cast
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CocktailsTableViewCell", for: indexPath) as! CocktailsTableViewCell
-        
+
         guard let drinks = drinksDict[categoriesToShow[indexPath.section]] else { return cell}
         
         cell.configure(drink: drinks[indexPath.row])
