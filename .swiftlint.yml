@@ -1,0 +1,18 @@
+file_length: 550
+function_body_length: 80
+function_parameter_count: 8
+line_length: 200
+type_body_length: 300
+variable_name:
+  min_length:
+    warning: 1
+excluded:
+    - Pods
+    - SwiftLint/Common/3rdPartyLib
+
+disabled_rules:
+    - valid_docs
+    - trailing_whitespace
+
+excluded: # paths to ignore during linting.
+    - Pods
