@@ -28,6 +28,7 @@
 		6AB31CB1242CBF7200439396 /* CocktailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB31CAF242CBF7200439396 /* CocktailsTableViewCell.xib */; };
 		6AB31CB3242CC39C00439396 /* Categories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB31CB2242CC39C00439396 /* Categories.swift */; };
 		6AB31CB5242CE2E900439396 /* Cocktail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB31CB4242CE2E900439396 /* Cocktail.swift */; };
+		6AD8299F242E59F900160B8E /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD8299E242E59F900160B8E /* Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -65,6 +66,7 @@
 		6AB31CAF242CBF7200439396 /* CocktailsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CocktailsTableViewCell.xib; sourceTree = "<group>"; };
 		6AB31CB2242CC39C00439396 /* Categories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Categories.swift; sourceTree = "<group>"; };
 		6AB31CB4242CE2E900439396 /* Cocktail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocktail.swift; sourceTree = "<group>"; };
+		6AD8299E242E59F900160B8E /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		9DF31F39ECC484E3F7DD7CDD /* Pods-Cocktail DB.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cocktail DB.release.xcconfig"; path = "Target Support Files/Pods-Cocktail DB/Pods-Cocktail DB.release.xcconfig"; sourceTree = "<group>"; };
 		CAB858425F1264C82C9A6247 /* Pods-Cocktail DB.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cocktail DB.debug.xcconfig"; path = "Target Support Files/Pods-Cocktail DB/Pods-Cocktail DB.debug.xcconfig"; sourceTree = "<group>"; };
 		F96F715CB89EE153CC785017 /* Pods_Cocktail_DB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cocktail_DB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,6 +134,7 @@
 				6AB31C98242CB37F00439396 /* Flows */,
 				6AB31C97242CB30A00439396 /* Resources */,
 				6AB31C95242CB28100439396 /* SupportingFiles */,
+				6AD8299E242E59F900160B8E /* Helpers.swift */,
 			);
 			path = "Cocktail DB";
 			sourceTree = "<group>";
@@ -423,6 +426,7 @@
 				6AB31CAA242CBD4600439396 /* ViewControllerFactory.swift in Sources */,
 				6AB31C9E242CB46C00439396 /* API.swift in Sources */,
 				6AB31CA5242CBCAC00439396 /* ApplicationCoordinator.swift in Sources */,
+				6AD8299F242E59F900160B8E /* Helpers.swift in Sources */,
 				6AB31CB0242CBF7200439396 /* CocktailsTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

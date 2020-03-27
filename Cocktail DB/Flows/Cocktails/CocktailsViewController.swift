@@ -87,12 +87,18 @@ private extension CocktailsViewController {
     func setupCategoriesButton(active: Bool) {
         let item = UIBarButtonItem(title: "Categories: \(categoriesToShow.count)", style: .plain, target: self, action: #selector(categoriesButtonTapped))
         item.isEnabled = true ? active: false
+        print(item.isEnabled)
         navigationItem.rightBarButtonItem = item
     }
     
     @objc func categoriesButtonTapped() {
         cocktailsCoordinatorProtocol?.navigateToCategories(categories: categories, completion: { (selectedCategories) in
+            var scrollUp = true
+            if selectedCategories.containsSameElements(as: self.categoriesToShow) {
+                scrollUp = false
+            }
             self.categoriesToShow = selectedCategories
+            if scrollUp { self.drinksTableView.setContentOffset(.zero, animated: true) }
         })
     }
     
