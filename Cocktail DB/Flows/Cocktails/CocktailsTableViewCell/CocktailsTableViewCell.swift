@@ -21,7 +21,7 @@ final class CocktailsTableViewCell: UITableViewCell {
     func configure(drink: Drink) {
         nameLabel.text = drink.strDrink
         if let strURL = drink.strDrinkThumb {
-            imgView.sd_setImage(with: URL(string: strURL))
+            imgView.sd_setImage(with: URL(string: strURL), placeholderImage: UIImage(named: "loader"), options: .scaleDownLargeImages, context: nil)
         }
     }
 }

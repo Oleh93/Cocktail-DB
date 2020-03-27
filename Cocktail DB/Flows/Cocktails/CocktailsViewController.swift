@@ -85,7 +85,7 @@ private extension CocktailsViewController {
     }
     
     func setupCategoriesButton(active: Bool) {
-        let item = UIBarButtonItem(title: "Categories", style: .plain, target: self, action: #selector(categoriesButtonTapped))
+        let item = UIBarButtonItem(title: "Categories: \(categoriesToShow.count)", style: .plain, target: self, action: #selector(categoriesButtonTapped))
         item.isEnabled = true ? active: false
         navigationItem.rightBarButtonItem = item
     }
