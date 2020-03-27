@@ -18,9 +18,17 @@ final class ApplicationCoordinator: Coordinator {
     }
     
     func start() {
+        showCocktails()
+        print("app coordinator started")
+    }
+}
+
+// MARK: - Cocktails Flow
+
+private extension ApplicationCoordinator {
+    func showCocktails() {
         let cocktailsCoordinator = CocktailsCoordinator(navigationController: navigationController)
         childCoordinators.append(cocktailsCoordinator)
         cocktailsCoordinator.start()
-        print("app coordinator started")
     }
 }

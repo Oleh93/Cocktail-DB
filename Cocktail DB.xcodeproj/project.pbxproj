@@ -177,7 +177,6 @@
 			children = (
 				6AB31CA1242CBC7B00439396 /* Coordinators */,
 				6AB31CAB242CBE0A00439396 /* Cocktails */,
-				6AB31CAC242CBE1B00439396 /* Categories */,
 			);
 			path = Flows;
 			sourceTree = "<group>";
@@ -237,6 +236,7 @@
 		6AB31CAB242CBE0A00439396 /* Cocktails */ = {
 			isa = PBXGroup;
 			children = (
+				6AB31CAC242CBE1B00439396 /* Categories */,
 				6AB31CAD242CBF4D00439396 /* CocktailsTableViewCell */,
 				6AB31C86242CB09E00439396 /* Cocktails.storyboard */,
 				6AB31C84242CB09E00439396 /* CocktailsViewController.swift */,

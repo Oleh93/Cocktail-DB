@@ -31,14 +31,6 @@ final class CategoriesViewController: UIViewController {
         setupTableViewCell()
         setupSaveButton()
     }
-
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//
-//        let selectedCategories = getSelectedCategories()
-//        DataManager.shared.categoriesToShow = selectedCategories
-//        completion?(selectedCategories)
-//    }
 }
 
 // MARK: - Private
