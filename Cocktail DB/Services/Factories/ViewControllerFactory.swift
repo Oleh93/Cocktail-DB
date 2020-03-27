@@ -13,7 +13,7 @@ import UIKit
 struct ViewControllerType {
     let storyboardName: String
     let storyboardId: String
-
+    
     init(storyboard name: String, viewController id: String) {
         self.storyboardName = name
         self.storyboardId = id
@@ -22,9 +22,9 @@ struct ViewControllerType {
 
 final class ViewControllerFactory {
     static let shared = ViewControllerFactory()
-
+    
     private init() {}
-
+    
     private func createViewController(for type: ViewControllerType) -> UIViewController {
         let sb = UIStoryboard(name: type.storyboardName, bundle: nil)
         let vc = sb.instantiateViewController(withIdentifier: type.storyboardId)
@@ -59,3 +59,4 @@ extension ViewControllerFactory {
         return vc as! CategoriesViewController
     }
 }
+//swiftlint:enable force_cast

@@ -14,9 +14,11 @@ final class DataManager {
     private let userDefaults = UserDefaults.standard
 }
 
+// MARK: - Categories
+
 extension DataManager {
     private var categoriesToShowKey: String {"categoriesToShow.Key"}
-
+    
     var categoriesToShow: [String]? {
         set { userDefaults.set(newValue, forKey: categoriesToShowKey)}
         get { userDefaults.stringArray(forKey: categoriesToShowKey)}

@@ -10,31 +10,35 @@ import UIKit
 
 private enum Constants {
     static var heightForRow = 100
+    static var paginationReserve = 3
 }
 
 final class CocktailsViewController: UIViewController {
-
+    
     // MARK: - IBOutlets
     
-    @IBOutlet weak var drinksTableView: UITableView!
+    @IBOutlet weak private var drinksTableView: UITableView!
     
     // MARK: - Properties
     var cocktailsCoordinatorProtocol: CocktailsCoordinatorProtocol?
     
-    var drinks: [String: [Drink]] = [:] {
+    var drinksDict: [String: [Drink]] = [:] {
         didSet {
-            DispatchQueue.main.async { self.drinksTableView.reloadData() }
+            DispatchQueue.main.async {
+                print("didSet")
+                self.drinksTableView.reloadData() }
         }
     }
     var categories: [String] = []
+    
     var categoriesToShow: [String] = [] {
         didSet {
-            DispatchQueue.main.async { self.drinksTableView.reloadData() }
+            DispatchQueue.main.async { self.loadFirstSection()}
         }
     }
-
+    
     // MARK: - Lifecycle
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -52,12 +56,12 @@ final class CocktailsViewController: UIViewController {
             switch result {
             case .success(let data):
                 self.categories = data.drinks.compactMap({ $0.strCategory })
-
+                
                 if DataManager.shared.categoriesToShow == nil {
                     DataManager.shared.categoriesToShow = self.categories
                 }
                 self.categoriesToShow = DataManager.shared.categoriesToShow!
-                
+                self.loadFirstSection()
                 print("categories success")
             case .failure(let error):
                 print(error)
@@ -88,6 +92,19 @@ private extension CocktailsViewController {
             self.categoriesToShow = selectedCategories
         })
     }
+    
+    func loadFirstSection() {
+        API.shared.fetchDrinks(category: categoriesToShow[0]) { (result) in
+            switch result {
+            case .success(let data):
+                print("here")
+                self.drinksDict[self.categoriesToShow[0]] = data.drinks
+                print("drinksDict count:", self.drinksDict.count)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -103,13 +120,14 @@ extension CocktailsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let category = categoriesToShow[section]
-        return drinks[category]?.count ?? 0
+        return drinksDict[category]?.count ?? 0
     }
     
     //swiftlint:disable force_cast
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CocktailsTableViewCell", for: indexPath) as! CocktailsTableViewCell
-        guard let drinks = drinks[categoriesToShow[indexPath.section]] else { return cell}
+        
+        guard let drinks = drinksDict[categoriesToShow[indexPath.section]] else { return cell}
         
         cell.configure(drink: drinks[indexPath.row])
         return cell
@@ -128,15 +146,31 @@ extension CocktailsViewController: UITableViewDelegate {
         CGFloat(Constants.heightForRow)
     }
     
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let category = categoriesToShow[section]
-
-        if drinks[category] == nil {
-            API.shared.fetchDrinks(category: category) { (result) in
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let currentCategory = categoriesToShow[indexPath.section]
+        if indexPath.section == categoriesToShow.count - 1 { return }
+        let nextCategory = categoriesToShow[indexPath.section + 1]
+        
+        if let currentDrinks = drinksDict[currentCategory] {
+            if indexPath.row == currentDrinks.count - Constants.paginationReserve {
+                API.shared.fetchDrinks(category: nextCategory) { (result) in
+                    switch result {
+                    case .success(let data):
+                        if self.drinksDict[nextCategory] == nil {
+                            self.drinksDict[nextCategory] = data.drinks
+                        }
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            }
+        } else {
+            API.shared.fetchDrinks(category: currentCategory) { (result) in
                 switch result {
                 case .success(let data):
-                    print("success")
-                    self.drinks[category] = data.drinks
+                    if self.drinksDict[nextCategory] == nil {
+                        self.drinksDict[currentCategory] = data.drinks
+                    }
                 case .failure(let error):
                     print(error)
                 }

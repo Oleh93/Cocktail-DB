@@ -17,7 +17,7 @@ final class CocktailsTableViewCell: UITableViewCell {
     @IBOutlet private weak var nameLabel: UILabel!
     
     // MARK: - Methods
-
+    
     func configure(drink: Drink) {
         nameLabel.text = drink.strDrink
         if let strURL = drink.strDrinkThumb {

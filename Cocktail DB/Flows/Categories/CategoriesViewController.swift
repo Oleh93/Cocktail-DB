@@ -90,7 +90,7 @@ extension CategoriesViewController: UITableViewDataSource {
             selectedCategoriesIndexes.append(indexPath.row)
         }
         //swiftlint:enable force_cast
-
+        
         return cell
     }
 }

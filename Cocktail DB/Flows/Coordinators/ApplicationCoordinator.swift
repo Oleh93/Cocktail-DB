@@ -12,11 +12,11 @@ import UIKit
 final class ApplicationCoordinator: Coordinator {
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
-
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
-
+    
     func start() {
         let cocktailsCoordinator = CocktailsCoordinator(navigationController: navigationController)
         childCoordinators.append(cocktailsCoordinator)
